@@ -1,0 +1,384 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Nuestro Viaje ❤️</title>
+
+<style>
+body {
+    margin: 0;
+    font-family: Arial, sans-serif;
+    overflow: hidden;
+    background: black;
+    color: white;
+}
+
+/* Pantalla inicial */
+#inicio {
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    background: black;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    flex-direction: column;
+}
+
+button {
+    padding: 15px 30px;
+    font-size: 18px;
+    border: none;
+    border-radius: 25px;
+    background: #ff4b5c;
+    color: white;
+}
+
+/* Viaje */
+#viaje {
+    display: none;
+    position: absolute;
+    width: 100%;
+    height: 100vh;
+    overflow: hidden;
+}
+
+/* Fondo estrellas */
+.estrellas {
+    position: absolute;
+    width: 300%;
+    height: 100%;
+    background: url('https://humanidades.com/wp-content/uploads/2017/05/universo-1-e1568576142428.jpg') repeat-x;
+    background-size: auto 100%;
+    animation: moverEspacio 30s linear infinite;
+}
+
+@keyframes moverEspacio {
+    from { transform: translateX(0); }
+    to { transform: translateX(-66.6%); }
+}
+
+/* Avión */
+.avion {
+    position: absolute;
+    top: 50%;
+    left: 20%;
+    width: 120px;
+    height: auto;
+    animation: flotar 3s ease-in-out infinite;
+}
+
+@keyframes flotar {
+    0% { transform: translate(-50%, -50%) translateY(0px); }
+    50% { transform: translate(-50%, -50%) translateY(-10px); }
+    100% { transform: translate(-50%, -50%) translateY(0px); }
+}
+
+/* Mensajes */
+.mensaje {
+    position: absolute;
+    white-space: nowrap;
+    font-size: 28px;
+    font-family: 'Segoe Script', cursive;
+    color: #ffffff;
+    text-shadow: 0 0 8px #ff69b4, 0 0 15px #ff1493;
+    animation: moverMensaje 10s linear infinite;
+}
+
+@keyframes moverMensaje {
+    0% { transform: translateX(100vw); opacity: 0; }
+    20% { opacity: 1; }
+    80% { opacity: 1; }
+    100% { transform: translateX(-100%); opacity: 0; }
+}
+
+/* Imágenes */
+.img {
+    position: absolute;
+    width: 100px;
+    height: 100px;
+    border-radius: 15px;
+    animation: moverMensaje 12s linear infinite;
+}
+
+/* BOTONES FINALES */
+.final-btn {
+    padding: 15px 25px;
+    margin: 10px;
+    font-size: 18px;
+    border-radius: 20px;
+    border: none;
+    cursor: pointer;
+}
+
+.si {
+    background: #ff4b5c;
+    color: white;
+}
+
+.no {
+    background: gray;
+    color: white;
+}
+
+/* CORAZONES */
+.corazon {
+    position: absolute;
+    font-size: 20px;
+    animation: caer 4s linear forwards;
+}
+
+@keyframes caer {
+    0% { transform: translateY(-10%); opacity: 1; }
+    100% { transform: translateY(110vh); opacity: 0; }
+}
+</style>
+</head>
+
+<body>
+
+<!-- AUDIO -->
+<audio id="musica">
+    <source src="piel-canela.mp3" type="audio/mpeg">
+</audio>
+
+<!-- INICIO -->
+<div id="inicio">
+    <h1>¿Lista para nuestro viaje mi Fernanda? :3 ✈️❤️</h1>
+    <button onclick="iniciarViaje()">Apreta este boton</button>
+</div>
+
+<!-- VIAJE -->
+<div id="viaje">
+    <div class="estrellas"></div>
+    <img src="avion.png" class="avion">
+</div>
+
+<script>
+
+let intervaloMensajes;
+let intervaloImagenes;
+let mensajeFinal = null;
+
+function iniciarViaje() {
+    document.getElementById("inicio").style.display = "none";
+    document.getElementById("viaje").style.display = "block";
+
+    const musica = document.getElementById("musica");
+    musica.volume = 0;
+    musica.play();
+
+    let vol = 0;
+    const subirVolumen = setInterval(() => {
+        if (vol < 0.2) {
+            vol += 0.01;
+            musica.volume = vol;
+        } else {
+            clearInterval(subirVolumen);
+        }
+    }, 200);
+
+    musica.addEventListener("ended", finalizarViaje);
+
+    intervaloMensajes = setInterval(crearMensaje, 2000);
+    intervaloImagenes = setInterval(crearImagen, 4000);
+}
+
+const mensajes = [
+"La mujer mas hermosa del mundo ❤️",
+"MI MUJER :3 ❤️",
+"Mi futura esposa ❤️",
+"TE AMO <3",
+"Eres el amor de mi vida❤️",
+"nunca te vayas de mi vida ❤️",
+"Quiero besarte todo el dia 💕",
+"Mi niña hermosa✨",
+"No quiero perderte nunca 🥺",
+"Eres mi todo 💕",
+"Gracias por existir 💘",
+"Mi vida eres tú ❤️",
+"La madre de mis hijos 🥰",
+"TE AMOOOOOOOOOOO <3",
+"Mi fernanda 🥺",
+"Eres mi sueño 😘",
+"Tan tierna jsjs",
+"Bendito sea los 29's de abril 💞",
+"Siempre estaras por delante de todo "
+];
+
+const fotos = [
+"https://i.pinimg.com/736x/29/50/8a/29508a7b69f1dc9b62f4ee38263b87ff.jpg",
+"https://cdn.assets.prezly.com/53625b92-ee63-435d-9f6b-e10e36783e37/San-Valentin-3.jpg",
+"https://simg.nicepng.com/png/small/593-5932066_some-cute-hello-kitty-transparents-i-made-hello.png",
+"https://i.pinimg.com/474x/08/76/65/0876651904c43274bd2cc1635dc4f7d6.jpg",
+"https://i.pinimg.com/originals/1a/15/e9/1a15e95c37e11982aa853428c4ca4d13.jpg",
+"https://img.freepik.com/vector-premium/dibujar-amor-pareja-gatos-corazoncito-dia-san-valentin_45130-1509.jpg",
+"https://i.pinimg.com/736x/af/2e/4f/af2e4f50f102cbe674691910ea6b8900.jpg",
+"https://i.pinimg.com/736x/72/08/05/7208050d55e237293adc047693d3a851.jpg",
+"https://i.pinimg.com/736x/46/61/c4/4661c4db7f0aa4ea40551318f85af64b.jpg",
+"https://i.pinimg.com/736x/68/31/f9/6831f92ac0bda82750bd182b43e2951c.jpg",
+"https://i.pinimg.com/736x/cd/b5/b7/cdb5b7ee12e5f96b4fc113c4574ee8a8.jpg",
+"https://i.pinimg.com/564x/0e/cb/8c/0ecb8ca803198fd46b671e87c8cbb54a.jpg"
+
+];
+
+function crearMensaje() {
+    const m = document.createElement("div");
+    m.className = "mensaje";
+    m.innerText = mensajes[Math.floor(Math.random() * mensajes.length)];
+    m.style.top = Math.random() * 80 + "%";
+    document.getElementById("viaje").appendChild(m);
+    setTimeout(() => m.remove(), 10000);
+}
+
+function crearImagen() {
+    const img = document.createElement("img");
+    img.className = "img";
+    img.src = fotos[Math.floor(Math.random() * fotos.length)];
+    img.style.top = Math.random() * 80 + "%";
+    document.getElementById("viaje").appendChild(img);
+    setTimeout(() => img.remove(), 12000);
+}
+
+/* FINAL */
+function finalizarViaje() {
+
+    clearInterval(intervaloMensajes);
+    clearInterval(intervaloImagenes);
+
+    const viaje = document.getElementById("viaje");
+    viaje.innerHTML = "";
+
+    // 🌌 fondo estrellas
+    const estrellas = document.createElement("div");
+    estrellas.className = "estrellas";
+    viaje.appendChild(estrellas);
+
+    // 🌙 LUNA
+    const luna = document.createElement("img");
+    luna.src = "luna.png";
+    luna.style.position = "absolute";
+    luna.style.width = "380px";
+    luna.style.top = "50%";
+    luna.style.left = "100%";
+    luna.style.transform = "translate(-50%, -50%)";
+    luna.style.transition = "left 5s ease-in-out";
+    luna.style.filter = "drop-shadow(0 0 30px white)";
+    viaje.appendChild(luna);
+
+    // ✈️ AVIÓN
+    const avion = document.createElement("img");
+    avion.src = "avion.png";
+    avion.style.position = "absolute";
+    avion.style.width = "140px";
+    avion.style.top = "50%";
+    avion.style.left = "10%";
+    avion.style.transition = "left 5s ease-in-out";
+    viaje.appendChild(avion);
+
+    // MOVIMIENTO
+    setTimeout(() => {
+        luna.style.left = "55%";
+        avion.style.left = "45%";
+    }, 200);
+
+    // 💖 MENSAJE (20 segundos)
+    let mensaje = document.createElement("div");
+    mensaje.innerHTML = "La primera vez que te vi, me enamore de ti automaticamente ❤, eres muy hermosa, eres gentil conmigo una buena chica estudiosa y todo lo bueno de este mundo, nose que hice para merecerte. Te amo mi niña feliz cumpleaños!!!! <3";
+
+    mensaje.style.position = "absolute";
+    mensaje.style.top = "8%";
+    mensaje.style.left = "50%";
+    mensaje.style.transform = "translateX(-50%)";
+    mensaje.style.width = "80%";
+    mensaje.style.maxWidth = "400px";
+    mensaje.style.padding = "20px";
+    mensaje.style.textAlign = "center";
+    mensaje.style.fontSize = "22px";
+    mensaje.style.fontFamily = "'Segoe Script', cursive";
+    mensaje.style.color = "red";
+    mensaje.style.background = "rgba(0,0,0,0.7)";
+    mensaje.style.borderRadius = "15px";
+    mensaje.style.boxShadow = "0 0 25px red";
+    mensaje.style.zIndex = "99999";
+
+    document.body.appendChild(mensaje);
+
+    // ⏱️ dura 20 segundos
+    setTimeout(() => {
+        mensaje.remove();
+        mostrarOpcionesFinales();
+    }, 20000);
+}
+
+function mostrarOpcionesFinales() {
+
+    const viaje = document.getElementById("viaje");
+    viaje.innerHTML = "";
+
+    // 🌄 fondo imagen
+    viaje.style.backgroundImage = "url('https://encrypted-tbn0.gstatic.com/images?q=tbn:ANd9GcQL8wLRGEhRWBM4GA0LZHZVdarKTLiAFk0mxA&s')";
+    viaje.style.backgroundSize = "cover";
+    viaje.style.backgroundPosition = "center";
+    viaje.style.backgroundRepeat = "no-repeat";
+
+    const cont = document.createElement("div");
+    cont.style.position = "absolute";
+    cont.style.top = "50%";
+    cont.style.left = "50%";
+    cont.style.transform = "translate(-50%, -50%)";
+    cont.style.textAlign = "center";
+    cont.style.color = "white";
+    cont.style.textShadow = "0 0 10px black";
+
+    cont.innerHTML = `
+        <h2>¿Quieres seguir el viaje? ❤️</h2>
+        <button class="final-btn si" onclick="aceptar()">Sí ❤️</button>
+        <button class="final-btn no" onclick="rechazar(this)">No 😏</button>
+    `;
+
+    viaje.appendChild(cont);
+
+    setInterval(crearCorazon, 300);
+}
+
+/* CORAZONES */
+function crearCorazon() {
+    const c = document.createElement("div");
+    c.className = "corazon";
+    c.innerText = "❤️";
+    c.style.left = Math.random() * 100 + "vw";
+    c.style.fontSize = (20 + Math.random() * 20) + "px";
+    document.body.appendChild(c);
+    setTimeout(() => c.remove(), 4000);
+}
+
+/* BOTONES */
+function aceptar() {
+    location.reload();
+}
+
+function rechazar(btn) {
+    const frases = [
+        "¿segura? 😏",
+        "piénsalo bien ❤️",
+        "no huyas 👀",
+        "te estoy conquistando 😌",
+        "otra vez? 😳"
+    ];
+
+    btn.innerText = frases[Math.floor(Math.random() * frases.length)];
+
+    const maxX = window.innerWidth - btn.offsetWidth;
+    const maxY = window.innerHeight - btn.offsetHeight;
+
+    btn.style.position = "absolute";
+    btn.style.left = Math.random() * maxX + "px";
+    btn.style.top = Math.random() * maxY + "px";
+}
+
+</script>
+
+</body>
+</html>
